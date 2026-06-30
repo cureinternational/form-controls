@@ -94,10 +94,14 @@ export class Util {
     });
   }
 
-  static resolveUrlTokens(url) {
+  static resolveUrlTokens(url, params) {
     const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
     const UNITS = { d: 'days' };
+    const resolvedParams = params || {};
     return url.replace(/\{([^}]+)\}/g, (match, token) => {
+      if (Object.prototype.hasOwnProperty.call(resolvedParams, token)) {
+        return resolvedParams[token];
+      }
       if (token === 'NOW') {
         return encodeURIComponent(moment().endOf('day').format(DATE_FORMAT));
       }
