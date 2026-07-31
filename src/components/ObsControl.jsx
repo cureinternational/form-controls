@@ -127,6 +127,33 @@ export class ObsControl extends addMoreDecorator(Component) {
         <i className="fa fa-question-circle form-builder-tooltip-trigger"
           onClick={() => this.setState({ showHintButton: !showHintButton })}
         />}
+        {this.displayAttachedControls()}
+      </div>
+    );
+  }
+
+  displayAttachedControls() {
+    const { metadata: { controls }, allowedDomains, patientUuid,
+      showValidationErrors, intl } = this.props;
+    if (!controls || controls.length === 0) {
+      return null;
+    }
+    return (
+      <div className="obs-attached-label">
+        {controls.map((control) => {
+          const registeredComponent = ComponentStore.getRegisteredComponent(control.type);
+          if (!registeredComponent) {
+            return null;
+          }
+          return React.createElement(registeredComponent, {
+            key: control.id,
+            metadata: control,
+            allowedDomains,
+            patientUuid,
+            showValidationErrors,
+            intl,
+          });
+        })}
       </div>
     );
   }
@@ -221,46 +248,6 @@ export class ObsControl extends addMoreDecorator(Component) {
     }
   }
 
-  showHyperlink() {
-    const { metadata: { properties }, patientUuid, allowedDomains } = this.props;
-    const rawUrl = ((properties && properties.hyperlinkUrl) || '').trim();
-    if (!rawUrl) {
-      return null;
-    }
-    const result = validateHyperlink(rawUrl, Array.isArray(allowedDomains) ? allowedDomains : []);
-    const resolvedUrl = result.valid && result.type === 'internal'
-      ? Util.resolveUrlTokens(result.sanitizedUrl, { patientUuid: patientUuid || '' })
-      : result.sanitizedUrl;
-    if (!result.valid) {
-      return (
-        <span className="hyperlink-error">{result.error}</span>
-      );
-    }
-    const linkText = (properties && properties.hyperlinkLabel) || resolvedUrl;
-    if (result.type === 'external') {
-      return (
-        <a
-          data-bahmni-hyperlink="true"
-          href={resolvedUrl}
-          referrerPolicy="no-referrer"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          {linkText}
-        </a>
-      );
-    }
-    return (
-      <a
-        data-bahmni-hyperlink="true"
-        href={resolvedUrl}
-        rel="noopener"
-        target="_blank"
-      >
-        {linkText}
-      </a>
-    );
-  }
 
   render() {
     const { concept } = this.props.metadata;
@@ -281,7 +268,6 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
                       <div className="obs-hyperlink-comment-row">
-                          {this.showHyperlink()}
                           {this.showComment()}
                       </div>
                   </div>
@@ -306,6 +292,7 @@ ObsControl.propTypes = {
   enabled: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
+    controls: PropTypes.array,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
@@ -321,6 +308,7 @@ ObsControl.propTypes = {
   showAddMore: PropTypes.bool.isRequired,
   showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,
@@ -332,6 +320,7 @@ ObsControl.defaultProps = {
   hidden: false,
   showAddMore: false,
   showRemove: false,
+  showValidationErrors: false,
 };
 
 const ObsControlWithIntl = injectIntl(ObsControl, { forwardRef: true });

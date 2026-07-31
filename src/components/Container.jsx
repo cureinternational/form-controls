@@ -174,6 +174,7 @@ export class Container extends addMoreDecorator(Component) {
     const patientUuid = patient ? patient.uuid : undefined;
     const childProps = {
       allowedDomains: this.props.allowedDomains || [],
+      showValidationErrors: this.props.showValidationErrors || false,
       collapse: this.state.collapse,
       errors: this.state.errors,
       formName,
@@ -205,6 +206,7 @@ export class Container extends addMoreDecorator(Component) {
 
 Container.propTypes = {
   allowedDomains: PropTypes.arrayOf(PropTypes.string),
+  showValidationErrors: PropTypes.bool,
   collapse: PropTypes.bool.isRequired,
   locale: PropTypes.string,
   metadata: PropTypes.shape({

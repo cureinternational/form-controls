@@ -53,6 +53,7 @@ export { SurgicalBlockDesigner } from 'components/designer/SurgicalBlock.jsx';
 export { IDGenerator } from 'src/helpers/idGenerator';
 export { DescriptorParser } from 'src/helpers/descriptorParser';
 export { default as ComponentStore } from 'src/helpers/componentStore';
+export { validateHyperlink } from 'src/helpers/hyperlinkValidator';
 
 // -------------------------- mappers ---------------------
 export { BooleanValueMapper } from 'src/mapper/BooleanValueMapper';
