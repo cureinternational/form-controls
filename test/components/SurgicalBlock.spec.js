@@ -27,7 +27,11 @@ describe('SurgicalBlock', () => {
         startDatetime: '2026-05-15T08:00:00.000+0000',
         provider: { person: { display: 'Dr. Smith' } },
         surgicalAppointments: [
-          { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' }, patient: { uuid: 'patient-uuid-1' } },
+          {
+            uuid: 'appt-uuid-1',
+            order: { uuid: 'order-uuid-1' },
+            patient: { uuid: 'patient-uuid-1' },
+          },
         ],
       },
       {
@@ -35,7 +39,11 @@ describe('SurgicalBlock', () => {
         startDatetime: '2026-05-20T10:00:00.000+0000',
         provider: { person: { display: 'Dr. Jones' } },
         surgicalAppointments: [
-          { uuid: 'appt-uuid-2', order: { uuid: 'order-uuid-2' }, patient: { uuid: 'patient-uuid-2' } },
+          {
+            uuid: 'appt-uuid-2',
+            order: { uuid: 'order-uuid-2' },
+            patient: { uuid: 'patient-uuid-2' },
+          },
         ],
       },
     ],
@@ -236,34 +244,41 @@ describe('SurgicalBlock', () => {
     sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'order-uuid-1', errors: [] }));
   });
 
-  it('should exclude appointments without an order from the dropdown', () => {
-    const dataWithNoOrder = {
-      results: [
-        {
-          uuid: 'block-uuid-1',
-          startDatetime: '2026-05-15T08:00:00.000+0000',
-          provider: { person: { display: 'Dr. Smith' } },
-          surgicalAppointments: [
-            { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' }, patient: { uuid: 'patient-uuid-1' } },
-            { uuid: 'appt-uuid-no-order', patient: { uuid: 'patient-uuid-3' } },
-          ],
-        },
-      ],
-    };
-    surgicalBlockStub.returnsPromise().resolves(dataWithNoOrder);
-    wrapper = mount(
-      <SurgicalBlock
-        formFieldPath={formFieldPath}
-        onChange={onChangeSpy}
-        properties={properties}
-        showNotification={showNotificationSpy}
-        validate={false}
-        validations={[]}
-      />
-    );
-    expect(wrapper.find('AutoComplete')).to.have.prop('options')
-      .to.eql([{ id: 'order-uuid-1', name: '15/05/2026 - Dr. Smith' }]);
-  });
+  it(
+    'should exclude appointments without an order from the dropdown',
+    () => {
+      const dataWithNoOrder = {
+        results: [
+          {
+            uuid: 'block-uuid-1',
+            startDatetime: '2026-05-15T08:00:00.000+0000',
+            provider: { person: { display: 'Dr. Smith' } },
+            surgicalAppointments: [
+              {
+                uuid: 'appt-uuid-1',
+                order: { uuid: 'order-uuid-1' },
+                patient: { uuid: 'patient-uuid-1' },
+              },
+              { uuid: 'appt-uuid-no-order', patient: { uuid: 'patient-uuid-3' } },
+            ],
+          },
+        ],
+      };
+      surgicalBlockStub.returnsPromise().resolves(dataWithNoOrder);
+      wrapper = mount(
+        <SurgicalBlock
+          formFieldPath={formFieldPath}
+          onChange={onChangeSpy}
+          properties={properties}
+          showNotification={showNotificationSpy}
+          validate={false}
+          validations={[]}
+        />
+      );
+      expect(wrapper.find('AutoComplete')).to.have.prop('options')
+        .to.eql([{ id: 'order-uuid-1', name: '15/05/2026 - Dr. Smith' }]);
+    }
+  );
 
   it('should return undefined when selection is cleared', () => {
     surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
