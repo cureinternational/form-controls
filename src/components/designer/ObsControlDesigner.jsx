@@ -293,9 +293,7 @@ export class ObsControlDesigner extends DropTarget {
                 {this.displayObsControl(designerComponent)}
                 {this.showAbnormalButton()}
                 {this.showAddMore()}
-                <div className="obs-hyperlink-comment-row">
-                  {this.showComment()}
-                </div>
+                {this.showComment()}
               </div>
             </div>
           </div>
