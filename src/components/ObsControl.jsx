@@ -266,9 +266,7 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
-                      <div className="obs-hyperlink-comment-row">
-                          {this.showComment()}
-                      </div>
+                      {this.showComment()}
                   </div>
               </div>
           </div>
