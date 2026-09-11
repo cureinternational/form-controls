@@ -27,7 +27,8 @@ describe('SurgicalBlock', () => {
         startDatetime: '2026-05-15T08:00:00.000+0000',
         provider: { person: { display: 'Dr. Smith' } },
         surgicalAppointments: [
-          { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' }, patient: { uuid: 'patient-uuid-1' } },
+          { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' },
+            patient: { uuid: 'patient-uuid-1' } },
         ],
       },
       {
@@ -35,7 +36,8 @@ describe('SurgicalBlock', () => {
         startDatetime: '2026-05-20T10:00:00.000+0000',
         provider: { person: { display: 'Dr. Jones' } },
         surgicalAppointments: [
-          { uuid: 'appt-uuid-2', order: { uuid: 'order-uuid-2' }, patient: { uuid: 'patient-uuid-2' } },
+          { uuid: 'appt-uuid-2', order: { uuid: 'order-uuid-2' },
+            patient: { uuid: 'patient-uuid-2' } },
         ],
       },
     ],
@@ -244,7 +246,8 @@ describe('SurgicalBlock', () => {
           startDatetime: '2026-05-15T08:00:00.000+0000',
           provider: { person: { display: 'Dr. Smith' } },
           surgicalAppointments: [
-            { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' }, patient: { uuid: 'patient-uuid-1' } },
+            { uuid: 'appt-uuid-1', order: { uuid: 'order-uuid-1' },
+              patient: { uuid: 'patient-uuid-1' } },
             { uuid: 'appt-uuid-no-order', patient: { uuid: 'patient-uuid-3' } },
           ],
         },
